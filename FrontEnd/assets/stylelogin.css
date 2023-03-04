@@ -1,0 +1,47 @@
+
+body{
+    background-color:#E5E5E5 ;
+}
+h1{
+    color: #1D6154;
+}
+.formulaire{
+    display: flex;
+    justify-content: center;
+    gap: 2;
+}
+.titre{
+    margin-bottom: 50px ;
+    text-align: center;
+}
+input{
+    width: 379px;
+    height: 51px;
+    margin: 10px 0;
+    border: none;
+    background-color:#FFFFFF ;
+}
+label{
+    font-family:"work-sans", sans-serif ;
+    font-size: 14px;
+    
+}
+button{
+    background-color: #1D6154;
+    color: #FFFFFF;
+    border: none;
+    
+}
+.boutton{
+    margin: 10px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    height: 36px;
+    background-color: #1D6154;
+
+}
+.lien{
+    display: flex;
+    justify-content: center;
+}
