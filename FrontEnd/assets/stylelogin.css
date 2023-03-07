@@ -30,6 +30,11 @@ button{
     background-color: #1D6154;
     color: #FFFFFF;
     border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
     
 }
 .boutton{
@@ -38,7 +43,6 @@ button{
     display: flex;
     justify-content: center;
     height: 36px;
-    background-color: #1D6154;
 
 }
 .lien{

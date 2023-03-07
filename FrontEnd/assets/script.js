@@ -38,3 +38,25 @@ async function displayProjects() {
 }
 
 displayProjects();
+
+// pour les filtres
+const liItem = document.querySelectorAll('ul li');
+
+liItem.forEach(li => {
+  li.onclik = function(){
+    //active
+    liItem.forEach(li => {
+      li.className = "";
+    })
+    li.className = "active";
+  }
+//filter
+console.log(li.textcontent);
+const value = li.textContent;
+imageUrl.forEach(img =>{
+  img.style.display = `none`;
+  if(img.getAttribute(`data-filter` == value.toLocaleLowerCase())){
+    img.style.display = `block`;
+  }
+})
+})
