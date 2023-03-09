@@ -1,6 +1,6 @@
 
 body{
-    background-color:#E5E5E5 ;
+    background-color:#FFFEF8 ;
 }
 h1{
     color: #1D6154;
@@ -25,25 +25,6 @@ label{
     font-family:"work-sans", sans-serif ;
     font-size: 14px;
     
-}
-button{
-    background-color: #1D6154;
-    color: #FFFFFF;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    
-}
-.boutton{
-    margin: 10px 0;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    height: 36px;
-
 }
 .lien{
     display: flex;

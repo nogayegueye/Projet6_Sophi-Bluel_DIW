@@ -24,7 +24,7 @@ async function displayProjects() {
   console.log(response);
   const responseJson = await response.json();
   console.log(responseJson);
-  let html = '';
+  let html = "";
   responseJson.forEach((item) => {
     html += `
           <figure>
@@ -35,28 +35,19 @@ async function displayProjects() {
   });
   console.log("bonsoir");
   gallery.innerHTML = html;
+  return responseJson;
 }
 
-displayProjects();
+displayProjects().then((projects) => {
+  console.log(projects);
+  const liItem = document.querySelectorAll("ul li");
 
-// pour les filtres
-const liItem = document.querySelectorAll('ul li');
-
-liItem.forEach(li => {
-  li.onclik = function(){
-    //active
-    liItem.forEach(li => {
-      li.className = "";
-    })
-    li.className = "active";
-  }
-//filter
-console.log(li.textcontent);
-const value = li.textContent;
-imageUrl.forEach(img =>{
-  img.style.display = `none`;
-  if(img.getAttribute(`data-filter` == value.toLocaleLowerCase())){
-    img.style.display = `block`;
-  }
-})
-})
+  liItem.forEach((li) => {
+    li.addEventListener("click", () => {
+      console.log("Bonjour");
+      console.log (projects);
+      const category = li.getAttribute("data-category");
+      console.log (category);
+    });
+  });
+});
