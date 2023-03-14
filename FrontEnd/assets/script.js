@@ -51,3 +51,26 @@ displayProjects().then((projects) => {
     });
   });
 });
+
+function filterProjects(category, projects) {
+  const filteredProjects = projects.filter(project => {
+      if (category === "Objets") {
+          return project.category.name === 'Objets';
+      } else if (category === "Appartements") {
+          return project.category.name === 'Appartements';
+      } else if (category === "Hotels & restaurants") {
+          return project.category.name === 'Hotels & restaurants';
+      } else {
+          return category === 'all';
+      }
+  });
+
+  gallery.innerHTML = filteredProjects.map(project => {
+      return `
+    <figure data-category="${project.categoryId}">
+      <img src="${project.imageUrl}" alt="${project.title}">
+      <figcaption>${project.title}</figcaption>
+    </figure>
+  `;
+  }).join('');
+}

@@ -1,1 +1,2 @@
-con
+var form = document.getElementById
+
