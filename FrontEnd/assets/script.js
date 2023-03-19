@@ -16,7 +16,10 @@ const gallery = document.querySelector(".gallery");
 //       console.log("bonsoir");
 //         gallery.innerHTML = html;
 //     })
-//     .catch(error => console.error(error));
+//     .catch(error => {
+//console.error(error)
+//});
+
 
 // console.log("bonjour");
 async function displayProjects() {
@@ -48,6 +51,9 @@ displayProjects().then((projects) => {
       console.log (projects);
       const category = li.getAttribute("data-category");
       console.log (category);
+      filterProjects(category, projects);
+      liItem.forEach((li) => li.classList.remove('active'));
+      li.classList.add('active');
     });
   });
 });
