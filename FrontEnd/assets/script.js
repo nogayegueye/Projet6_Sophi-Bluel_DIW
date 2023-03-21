@@ -1,32 +1,33 @@
 const gallery = document.querySelector(".gallery");
+const modalGallery = document.querySelector(".modal-gallery");
 
-// fetch('http://localhost:5678/api/works')
-//     .then(response => response.json())
-//     .then(data => {
-//         let html = '';
+fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(data => {
+        let html = '';
 
-//         data.forEach(item => {
-//             html += `
-//         <figure>
-//           <img src="${item.imageUrl}" alt="${item.title}">
-//           <figcaption>${item.title}</figcaption>
-//         </figure>
-//       `;
-//         });
-//       console.log("bonsoir");
-//         gallery.innerHTML = html;
-//     })
-//     .catch(error => {
-//console.error(error)
-//});
+        data.forEach(item => {
+            html += `
+        <figure>
+          <img src="${item.imageUrl}" alt="${item.title}">
+          <figcaption>éditer</figcaption>
+        </figure>
+      `;
+        });
+      console.log("bonsoir");
+        modalGallery.innerHTML = html;
+    })
+    .catch(error => {
+console.error(error)
+});
 
 
 // console.log("bonjour");
 async function displayProjects() {
   const response = await fetch("http://localhost:5678/api/works");
-  console.log(response);
+  //console.log(response);
   const responseJson = await response.json();
-  console.log(responseJson);
+ //console.log(responseJson);
   let html = "";
   responseJson.forEach((item) => {
     html += `
@@ -40,6 +41,25 @@ async function displayProjects() {
   gallery.innerHTML = html;
   return responseJson;
 }
+// async function displayProjects() {
+//   const response = await fetch("http://localhost:5678/api/works");
+//   //console.log(response);
+//   const responseJson = await response.json();
+//  //console.log(responseJson);
+//   let html = "";
+//   responseJson.forEach((item) => {
+//     html += `
+//           <figure>
+//             <img src="${item.imageUrl}" alt="${item.title}">
+//             <figcaption>éditer</figcaption>
+//           </figure>
+//         `;
+//   });
+//   console.log("bonsoir");
+//   modalGallery.innerHTML = html;
+//   return responseJson;
+// }
+
 
 displayProjects().then((projects) => {
   console.log(projects);
@@ -80,3 +100,44 @@ function filterProjects(category, projects) {
   `;
   }).join('');
 }
+//les modales
+let modal = null;
+
+const openModal = function (e){
+  e.preventDefault();
+  const target = document.querySelector(e.target.getAttribute('href'))
+  target.style.display = null;
+  target.removeAttribute('aria-hidden');
+  target.setAttribute('aria-modal', 'true');
+  modal = target;
+  modal.addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+  
+  
+}
+
+const closeModal = function(e){
+  if (modal ===null) return;
+  e.preventDefault();
+  modal.style.display = "none";
+  modal.setAttribute('aria-hidden', 'true');
+  modal.removetAttribute('aria-modal');
+  modal.removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+  modal = null;
+ 
+}
+
+const stopPropagation = function(e){
+  e.stopPropagation();
+}
+
+
+
+
+ document.querySelectorAll('.js-modal').forEach(a =>{
+  a.addEventListener('click', openModal)
+  
+ });
