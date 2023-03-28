@@ -216,15 +216,21 @@ footer nav ul {
 	padding: 2em;
 }
 .modal-gallery {
-	width: 78px;
 	display: grid;
-	height: 104px;
-	grid-template-columns: 1fr 1fr 1fr 1fr ;
+	height: 500px;
+	/* grid-template-columns: 1fr 1fr 1fr 1fr ;
 	grid-column-gap: 10px;
 	grid-row-gap: 10px;
+	margin-top: 20px; */
+	display: flex;
+    flex-wrap: wrap;
+    gap: 1;
+    margin: 12px 100px;
 }
 .modal-gallery img{
 	width: 100%;
+	height: 104px;
+	position: relative;
 }
 
 .modal{
@@ -241,11 +247,120 @@ footer nav ul {
 
 }
 .modal-wrapper{
-	width: 330px;
-	height: 331px;
+	width: 600px;
+	height: 730px;
 	padding: 20px;
 	background-color: #FFF;
 	padding: 20px;
+	border-radius: 10px;
+	margin: 0 50px;
 	
 }
- 
+
+#title-modal{
+	text-align: center;
+	margin-top: 20px;
+}
+.js-modal{
+	font-size: 10px;
+}
+.delete{
+	display: flex;
+    justify-content: center;
+	color: red;
+}
+.icone-sup{
+	position: absolute;
+    color: #008766;
+    background-color: #99e2d0;
+    height: 1.3rem;
+    width: 4rem;
+    text-align: center;
+    font-size: 0.6rem;
+    top: 1rem;
+    right: 1rem;
+}
+
+.image-container{
+	position: relative;
+	width: 78px;
+	margin: 10px;
+}
+.image-container i{
+	position: absolute;
+   top: 0;
+   right: 0;
+   margin: 10px;
+   background-color: black;
+   color: white;
+   height:20px;
+   width:20px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 10px;
+}
+h3{
+	font-size: 26px;
+	margin-bottom: 30px;
+}
+.js-modal-close{
+	border: none;
+	background-color: white;
+	float: right;
+	clear: both;
+
+}
+.bande{
+	border: 1px solid #B3B3B3;
+	margin: 0 100px;
+}
+.modal-button{
+	height: 36px;
+}
+.modifier1{
+	margin: 10px 0 0 60px;
+}
+#back-to-gallery{
+	border: none;
+	background-color: white;
+}
+
+.add-image{
+	background-color: #E8F1F6;
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.fa-light{
+	font-size: 50px;
+	margin-bottom: 20px;
+}
+.add-image_button{
+	height: 36px;
+	width: 173px;
+	background-color: #CBD6DC;
+	border-radius: 50px;
+	border: none;
+	margin-bottom: 10px;
+	color: #306685;
+}
+.parrag{
+	font-size: 10px ;
+}
+.addmodal-wrapper{
+	padding: 0 50px;
+}
+#addform input,select{
+	width: 100%;
+	margin: 10px 0;
+	height: 51px;
+	box-shadow: 0px 4px 14px #F6F6F6;
+	border: none;
+}
+#addform select{
+	margin-bottom: 50px;
+}
