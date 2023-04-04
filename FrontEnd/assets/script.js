@@ -292,24 +292,24 @@ photoUploadInput.addEventListener("change", (event) => {
   photoPreviewContainer.appendChild(photoPreview);
 });
 //changer la couleur du btn valider en vert
-const form = document.getElementById("addform");
-const submitButton = document.getElementById("bnt-valider");
+// const form = document.getElementById("addform");
+// const submitButton = document.getElementById("bnt-valider");
 
-form.addEventListener("input", (event) => {
-  event.preventDefault(); // évite l'envoi du formulaire
-  const photoUploadInputValue = document.getElementById("photo-upload");
-  const categoryValue = document.getElementById("category").value;
-  const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
+// form.addEventListener("input", (event) => {
+//   event.preventDefault(); // évite l'envoi du formulaire
+//   const photoUploadInputValue = document.getElementById("photo-upload");
+//   const categoryValue = document.getElementById("category").value;
+//   const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
 
-  if (
-    photoUploadInputValue &&
-    titrePhotoAddValue &&
-    categoryValue !== "option0"
-  ) {
-    submitButton.disabled = false;
+//   if (
+//     photoUploadInputValue &&
+//     titrePhotoAddValue &&
+//     categoryValue !== "option0"
+//   ) {
+//     submitButton.disabled = false;
 
     // Envoie du formulaire au backend
 
-    // ...
-  }
-});
+//     // ...
+//   }
+// });
