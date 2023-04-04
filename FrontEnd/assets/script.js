@@ -44,7 +44,7 @@ async function displayProjects() {
 // Les filtres
 displayProjects().then((projects) => {
   console.log(projects);
-  const liItem = document.querySelectorAll("ul li");
+  const liItem = document.querySelectorAll("div.filtre ul li");
 
   liItem.forEach((li) => {
     li.addEventListener("click", () => {
@@ -215,39 +215,112 @@ backToGalleryBtn.addEventListener("click", function() {
 });
 
 
-// // pour suprimer les projets
-// Récupérer tous les ID des éléments à partir de l'API
-fetch('http://localhost:5678/api/works')
-  .then(response => response.json())
-  .then(data => {
-    // Parcourir tous les ID des éléments et envoyer une requête DELETE pour supprimer chaque élément
-    data.forEach(element => {
-      fetch('http://localhost:5678/api/works' + element.id, {
-        method: 'DELETE'
-      })
-        .then(response => {
-          if (response.ok) {
-            // L'élément a été supprimé avec succès
-          } else {
-            throw new Error('Impossible de supprimer l\'élément');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    });
+// pour suprimer les projets
+
+function deleteProject(projectId) {
+  //const authorizationKey = 'token'; 
+
+  fetch(`http://localhost:5678/api/works/${projectId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authorizationKey}` 
+    },
+    body: JSON.stringify({})
   })
-  .catch(error => {
-    console.error(error);
+    .then(response => {
+      if (response.ok) {
+        console.log('Le projet a été supprimé avec succès!');
+      } else {
+        console.error('La suppression du projet a échoué.');
+      }
+    })
+    .catch(error => {
+      console.error('Une erreur est survenue lors de la suppression du projet:', error);
+    });
+}
+const deleteIcons = document.querySelectorAll('.fa-trash-can ');
+console.log("bonjour");
+
+
+deleteIcons.forEach(icon => {
+  icon.addEventListener('click', event => {
+    const projectId = icon.parentElement.dataset.projectId;
+
+    
+    deleteProject(projectId);
   });
+});
+
+
+
+
+
+
+
+
+
+// Récupérer tous les ID des éléments à partir de l'API
+// fetch('http://localhost:5678/api/works')
+//   .then(response => response.json())
+//   .then(data => {
+//     // Parcourir tous les ID des éléments et envoyer une requête DELETE pour supprimer chaque élément
+//     data.forEach(element => {
+
+//le mettre dans une fonction
+//déclarer id
+//mettre une autorisation
+  //     fetch('http://localhost:5678/api/works/' + id, {
+  //       method: 'DELETE'
+  //     })
+  //       .then(response => {
+  //         if (response.ok) {
+  //           // L'élément a été supprimé avec succès
+  //         } else {
+  //           throw new Error('Impossible de supprimer l\'élément');
+  //         }
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+  // //   });
+  // })
+  // .catch(error => {
+  //   console.error(error);
+  // });
 
 
 //login en logout
 if (localStorage.getItem("token")) {
   document.getElementById("myLink").innerHTML = "Logout";
-  document.getElementById("myLink").addEventListener("click", function () {
-    localStorage.removeItem("token");
-  });
-} else {
-  
+
 }
+//ajouter un projet
+
+const photoUploadInput = document.getElementById('photo-upload');
+const photoPreviewContainer = document.querySelector('.add-image');
+
+photoUploadInput.addEventListener('change', (event) => {
+  const photoFile = event.target.files[0];
+  const photoPreview = document.createElement('img');
+  photoPreview.src = URL.createObjectURL(photoFile);
+  photoPreviewContainer.innerHTML = '';
+  photoPreviewContainer.appendChild(photoPreview);
+});
+//changer la couleur du btn valider en vert
+const form = document.getElementById('addform');
+const submitButton = document.querySelector('.modal-btn-valider');
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault(); // évite l'envoi du formulaire
+
+  const photoUploadInputValue = photoUploadInput.value;
+  const titrePhotoAddValue = document.getElementById('titre-photo-add').value;
+  const categoryValue = document.getElementById('category').value;
+
+  if (photoUploadInputValue && titrePhotoAddValue && categoryValue !== 'option0') {
+    submitButton.classList.add('green'); // ajoute la classe "green" pour la couleur verte
+    // Envoie du formulaire au backend
+    // ...
+  }
+});
