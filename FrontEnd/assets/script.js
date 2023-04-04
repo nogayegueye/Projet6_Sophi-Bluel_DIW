@@ -21,8 +21,7 @@ fetch("http://localhost:5678/api/works")
   .catch((error) => {
     console.error(error);
   });
- // window.addEventListener('load', genererHTMLImagesAvecIcone);
-
+// window.addEventListener('load', genererHTMLImagesAvecIcone);
 
 //recupération des projets
 async function displayProjects() {
@@ -83,69 +82,62 @@ function filterProjects(category, projects) {
 }
 
 //Supprimer les filtres lors de la connexion
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
 // Récupérer les boutons par leur ID
-const button1 = document.getElementById('button1');
-const button2 = document.getElementById('button2');
-const button3 = document.getElementById('button3');
-const button4 = document.getElementById('button4');
+const button1 = document.getElementById("button1");
+const button2 = document.getElementById("button2");
+const button3 = document.getElementById("button3");
+const button4 = document.getElementById("button4");
 
 // Masquer les boutons si un token est stocké
 if (token) {
-  button1.style.display = 'none';
-  button2.style.display = 'none';
-  button3.style.display = 'none';
-  button4.style.display = 'none';
+  button1.style.display = "none";
+  button2.style.display = "none";
+  button3.style.display = "none";
+  button4.style.display = "none";
 }
-
-
-
 
 //Ajouter les boutons modifier lorque l'utilisateur est connecté.
 function addButtons() {
-// créer les buttons de façon dynamique lorsque le token est valide
-if (localStorage.getItem('token')) {
+  // créer les buttons de façon dynamique lorsque le token est valide
+  if (localStorage.getItem("token")) {
+    // Créer les liens "modifier" avec une icône en avant
+    var modifierLink1 = document.createElement("a");
+    modifierLink1.href = "#";
+    modifierLink1.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
-  // Créer les liens "modifier" avec une icône en avant
-  var modifierLink1 = document.createElement('a');
-  modifierLink1.href = '#';
-  modifierLink1.innerHTML = '<span class="fas fa-edit"></span> Modifier';
-  
-  var modifierLink2 = document.createElement('a');
-  modifierLink2.href = '#';
-  modifierLink2.innerHTML = '<span class="fas fa-edit"></span> Modifier';
-  
-  var modifierLink3 = document.createElement('a');
-  modifierLink3.href = '#modal1';
-  modifierLink3.innerHTML = '<span class="fas fa-edit"></span> Modifier';
+    var modifierLink2 = document.createElement("a");
+    modifierLink2.href = "#";
+    modifierLink2.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
-  // Cibler les éléments où les liens doivent apparaître
-  var linkContainer1 = document.querySelector('.modifier1');
-  var linkContainer2 = document.querySelector('.modifier2');
-  var linkContainer3 = document.querySelector('.js-modal');
+    var modifierLink3 = document.createElement("a");
+    modifierLink3.href = "#modal1";
+    modifierLink3.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
-  // Ajouter les liens aux éléments ciblés
-  linkContainer1.appendChild(modifierLink1);
-  linkContainer2.appendChild(modifierLink2);
-  linkContainer3.appendChild(modifierLink3);
+    // Cibler les éléments où les liens doivent apparaître
+    var linkContainer1 = document.querySelector(".modifier1");
+    var linkContainer2 = document.querySelector(".modifier2");
+    var linkContainer3 = document.querySelector(".js-modal");
 
-} else {
-
-  // Masquer les liens "modifier"
-  var modifierLinks = document.getElementsByTagName('a');
-  for (var i = 0; i < modifierLinks.length; i++) {
-    var link = modifierLinks[i];
-    if (link.innerHTML.includes('<span class="fas fa-edit"></span> Modifier')) {
-      link.style.display = 'none';
+    // Ajouter les liens aux éléments ciblés
+    linkContainer1.appendChild(modifierLink1);
+    linkContainer2.appendChild(modifierLink2);
+    linkContainer3.appendChild(modifierLink3);
+  } else {
+    // Masquer les liens "modifier"
+    var modifierLinks = document.getElementsByTagName("a");
+    for (var i = 0; i < modifierLinks.length; i++) {
+      var link = modifierLinks[i];
+      if (
+        link.innerHTML.includes('<span class="fas fa-edit"></span> Modifier')
+      ) {
+        link.style.display = "none";
+      }
     }
   }
-
-}
-    
 }
 addButtons();
-
 
 //les modales
 
@@ -189,76 +181,68 @@ document.querySelectorAll(".js-modal").forEach((a) => {
 });
 //modal2
 var addPhotoBtn = document.getElementById("add-photo");
-addPhotoBtn.addEventListener("click", function() {
+addPhotoBtn.addEventListener("click", function () {
   //Masquer la galerie
   var modalgallery = document.querySelector("#modal1");
   modalgallery.style.display = "none";
-  
+
   // Afficher la page d'ajout de photo
   var addPhotoModal = document.querySelector("#addPhotoModal");
   addPhotoModal.style.display = "flex";
 });
 
 var backToGalleryBtn = document.getElementById("back-to-gallery");
-backToGalleryBtn.addEventListener("click", function() {
+backToGalleryBtn.addEventListener("click", function () {
   // Masquer la page d'ajout de photo
   var addPhotoModal = document.querySelector("#addPhotoModal");
   addPhotoModal.style.display = "none";
-  
+
   // Afficher le premier modal
   var modal = document.querySelector("#modal1");
   modal.style.display = "flex";
-  
+
   // Afficher la galerie
   // var gallery = modal.querySelector(".modal-gallery");
   // gallery.style.display = "flex";
 });
 
-
 // pour suprimer les projets
 
 function deleteProject(projectId) {
-  //const authorizationKey = 'token'; 
+  //const authorizationKey = 'token';
 
   fetch(`http://localhost:5678/api/works/${projectId}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authorizationKey}` 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authorizationKey}`,
     },
-    body: JSON.stringify({})
+    body: JSON.stringify({}),
   })
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
-        console.log('Le projet a été supprimé avec succès!');
+        console.log("Le projet a été supprimé avec succès!");
       } else {
-        console.error('La suppression du projet a échoué.');
+        console.error("La suppression du projet a échoué.");
       }
     })
-    .catch(error => {
-      console.error('Une erreur est survenue lors de la suppression du projet:', error);
+    .catch((error) => {
+      console.error(
+        "Une erreur est survenue lors de la suppression du projet:",
+        error
+      );
     });
 }
-const deleteIcons = document.querySelectorAll('.fa-trash-can ');
+const deleteIcons = document.querySelectorAll(".fa-trash-can ");
 console.log("bonjour");
 
-
-deleteIcons.forEach(icon => {
-  icon.addEventListener('click', event => {
+deleteIcons.forEach((icon) => {
+  icon.addEventListener("click", (event) => {
     const projectId = icon.parentElement.dataset.projectId;
 
-    
     deleteProject(projectId);
   });
 });
-
-
-
-
-
-
-
-
 
 // Récupérer tous les ID des éléments à partir de l'API
 // fetch('http://localhost:5678/api/works')
@@ -270,57 +254,62 @@ deleteIcons.forEach(icon => {
 //le mettre dans une fonction
 //déclarer id
 //mettre une autorisation
-  //     fetch('http://localhost:5678/api/works/' + id, {
-  //       method: 'DELETE'
-  //     })
-  //       .then(response => {
-  //         if (response.ok) {
-  //           // L'élément a été supprimé avec succès
-  //         } else {
-  //           throw new Error('Impossible de supprimer l\'élément');
-  //         }
-  //       })
-  //       .catch(error => {
-  //         console.error(error);
-  //       });
-  // //   });
-  // })
-  // .catch(error => {
-  //   console.error(error);
-  // });
-
+//     fetch('http://localhost:5678/api/works/' + id, {
+//       method: 'DELETE'
+//     })
+//       .then(response => {
+//         if (response.ok) {
+//           // L'élément a été supprimé avec succès
+//         } else {
+//           throw new Error('Impossible de supprimer l\'élément');
+//         }
+//       })
+//       .catch(error => {
+//         console.error(error);
+//       });
+// //   });
+// })
+// .catch(error => {
+//   console.error(error);
+// });
 
 //login en logout
 if (localStorage.getItem("token")) {
   document.getElementById("myLink").innerHTML = "Logout";
-
 }
 //ajouter un projet
 
-const photoUploadInput = document.getElementById('photo-upload');
-const photoPreviewContainer = document.querySelector('.add-image');
+const photoUploadInput = document.getElementById("photo-upload");
+const photoPreviewContainer = document.querySelector(".add-image");
 
-photoUploadInput.addEventListener('change', (event) => {
+photoUploadInput.addEventListener("change", (event) => {
   const photoFile = event.target.files[0];
-  const photoPreview = document.createElement('img');
+  const photoPreview = document.createElement("img");
   photoPreview.src = URL.createObjectURL(photoFile);
-  photoPreviewContainer.innerHTML = '';
+  photoPreview.style.width = "100px";
+  photoPreview.style.height = "100px";
+  photoPreviewContainer.innerHTML = "";
   photoPreviewContainer.appendChild(photoPreview);
 });
 //changer la couleur du btn valider en vert
-const form = document.getElementById('addform');
-const submitButton = document.querySelector('.modal-btn-valider');
+const form = document.getElementById("addform");
+const submitButton = document.getElementById("bnt-valider");
 
-form.addEventListener('submit', (event) => {
+form.addEventListener("input", (event) => {
   event.preventDefault(); // évite l'envoi du formulaire
+  const photoUploadInputValue = document.getElementById("photo-upload");
+  const categoryValue = document.getElementById("category").value;
+  const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
 
-  const photoUploadInputValue = photoUploadInput.value;
-  const titrePhotoAddValue = document.getElementById('titre-photo-add').value;
-  const categoryValue = document.getElementById('category').value;
+  if (
+    photoUploadInputValue &&
+    titrePhotoAddValue &&
+    categoryValue !== "option0"
+  ) {
+    submitButton.disabled = false;
 
-  if (photoUploadInputValue && titrePhotoAddValue && categoryValue !== 'option0') {
-    submitButton.classList.add('green'); // ajoute la classe "green" pour la couleur verte
     // Envoie du formulaire au backend
+
     // ...
   }
 });

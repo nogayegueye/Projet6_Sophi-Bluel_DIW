@@ -456,7 +456,7 @@ select {
   height: 36px;
   width: 237px;
   border-radius: 60px;
-  background-color: #a7a7a7;
+  background-color: #008766;
   border: none;
   margin: 50px 100px;
   cursor: pointer;
@@ -480,4 +480,9 @@ input[type="file"] {
   margin-bottom: 20px;
   font-size: 14px;
   color: #306685;
+}
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
