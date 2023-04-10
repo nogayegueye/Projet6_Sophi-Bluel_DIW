@@ -33,7 +33,6 @@ fetch("http://localhost:5678/api/works")
   .catch((error) => {
     console.error(error);
   });
-// window.addEventListener('load', genererHTMLImagesAvecIcone);
 
 //recupération des projets
 async function displayProjects() {
@@ -42,7 +41,7 @@ async function displayProjects() {
   let html = "";
   responseJson.forEach((item) => {
     html += `
-          <figure>
+          <figure data-id="1+${item.id}">
             <img src="${item.imageUrl}" alt="${item.title}">
             <figcaption>${item.title}</figcaption>
           </figure>
@@ -52,6 +51,7 @@ async function displayProjects() {
   gallery.innerHTML = html;
   return responseJson;
 }
+
 // Les filtres
 displayProjects().then((projects) => {
   console.log(projects);
@@ -238,8 +238,18 @@ function deleteProject(projectId) {
       if (response.ok) {
         //Mettre à jour le HTML ici
         const projectList = document.querySelector(".gallery");
-        const deletedProject = document.querySelector(`[data-id='${projectId}']`);
-        projectList.removeChild(deletedProject);
+        const deletedProject = document
+          .querySelector(`[data-id='${projectId}']`)
+          .remove();
+        const deletedProjects = document
+          .querySelector(`[data-id='1+${projectId}']`)
+          .remove();
+        const deleteProjects = document
+          .querySelector(`[data-id='1+${projectId}']`)
+          .remove();
+
+        //projectList.removeChild(deletedProject);
+        //$("figure[data-id=" +'${projectId}' + "]").remove();
 
         console.log("Le projet a été supprimé avec succès!");
       } else {
@@ -358,31 +368,14 @@ button.addEventListener("click", (event) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      // //   Récupérer le conteneur HTML pour afficher les projets
-      // const projectContainer = document.querySelector("gallery");
 
-      // // Créer un nouvel élément div pour le nouveau projet
-      // const newProjectDiv = document.createElement("div");
-      // newProjectDiv.classList.add("project");
-
-      // // Créer un élément image pour la miniature du projet
-      // const newProjectImage = document.createElement("img");
-      // newProjectImage.src = data.imageUrl;
-      // newProjectImage.alt = data.title;
-      // newProjectDiv.appendChild(newProjectImage);
-
-      // // Créer un élément h3 pour le titre du projet
-      // const newProjectTitle = document.createElement("h3");
-      // newProjectTitle.textContent = data.title;
-      // newProjectDiv.appendChild(newProjectTitle);
-
-      // // Créer un élément p pour la description du projet
-      // const newProjectDescription = document.createElement("p");
-      // newProjectDescription.textContent = data.description;
-      // newProjectDiv.appendChild(newProjectDescription);
-
-      // // Ajouter le nouveau projet au conteneur
-      // projectContainer.appendChild(newProjectDiv);
+      const gallery = document.querySelector(".gallery");
+      const html = `
+        <figure>
+        <img src="${inputPhoto.files[0]}" alt="${inputPhoto.files[0].name}">
+        <figcaption>${item.title}</figcaption>
+      </figure>`;
+      gallery.innerHTML = gallery.innerHTML+html;
       console.log("DATA CALL", JSON.stringify(data));
     })
     .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
