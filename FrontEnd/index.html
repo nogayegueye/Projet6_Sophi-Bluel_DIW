@@ -75,38 +75,38 @@
         </button>
         <h3 id="title-modal">Ajout photo</h3>
         <div class="addmodal-wrapper">
-          <div class="add-image">
-            <i class="fa-light fa-regular fa-image"></i>
-            <div>
-              <label for="photo-upload" class="label-add">+Ajouter photo</label>
-              <input
-                type="file"
-                id="photo-upload"
-                name="photo-upload"
-                accept="image/*"
-              />
-            </div>
-
-            <p class="parrag">jpg, png : 4mo max</p>
-          </div>
-
-          <!-- <button class="add-image_button">+ Ajouter photo</button> -->
           <form id="addform">
-            <div>
+            <div class="add-image">
+                <i class="fa-light fa-regular fa-image"></i>
+                <div>
+                  <label for="photo-upload" class="label-add">+Ajouter photo</label>
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    name="photo-upload"
+                    accept="image/*"
+                  />
+                </div>
+                <p class="parrag">jpg, png : 4mo max</p>
+              </div>
+              <div>
               <label> Titre</label><br />
-              <input type="text" id="titre-photo-add" name="titre-photo-add" />
+              <input type="text" id="titre-photo-add" name="title" />
             </div>
             <label for="category">Catégorie</label><br />
             <select id="category" name="category">
               <option value="option0"></option>
-              <option value="option1">Objets</option>
-              <option value="option2">Appartements</option>
-              <option value="option3">Hôtels&restaurant</option>
+              <option value="1">Objets</option>
+              <option value="2">Appartements</option>
+              <option value="3">Hôtels&restaurant</option>
             </select>
+
+              
+
           </form>
           <div class="bande"></div>
           <div class="modal-btn-valider">
-            <button id="bnt-valider"  type="submit">Valider</button>
+            <button id="bnt-valider" disabled="true"  type="submit">Valider</button>
           </div>
         </div>
       </div>

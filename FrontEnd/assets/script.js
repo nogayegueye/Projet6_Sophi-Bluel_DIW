@@ -8,15 +8,27 @@ fetch("http://localhost:5678/api/works")
 
     data.forEach((item) => {
       html += `
-        <figure class="image-container">
+        <figure data-id="${item.id}" class="image-container">
           <img src="${item.imageUrl}" alt="${item.title}">
           <i class="fa-solid fa-trash-can"></i>
           <figcaption>éditer</figcaption>
         </figure>
       `;
     });
+
     console.log("bonsoir");
     modalGallery.innerHTML = html;
+    const deleteIcons = document.querySelectorAll(".fa-trash-can");
+    console.log("bonjour");
+
+    deleteIcons.forEach((icon) => {
+      icon.addEventListener("click", (event) => {
+        const projectId = icon.parentElement.dataset.id;
+        console.log(icon.parentElement);
+        console.log(projectId);
+        deleteProject(projectId);
+      });
+    });
   })
   .catch((error) => {
     console.error(error);
@@ -104,11 +116,11 @@ function addButtons() {
   if (localStorage.getItem("token")) {
     // Créer les liens "modifier" avec une icône en avant
     var modifierLink1 = document.createElement("a");
-    modifierLink1.href = "#";
+    modifierLink1.href = "#modal1";
     modifierLink1.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
     var modifierLink2 = document.createElement("a");
-    modifierLink2.href = "#";
+    modifierLink2.href = "#modal1";
     modifierLink2.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
     var modifierLink3 = document.createElement("a");
@@ -176,6 +188,12 @@ const closeModal = function (e) {
 const stopPropagation = function (e) {
   e.stopPropagation();
 };
+document.querySelectorAll(".modifier1").forEach((a) => {
+  a.addEventListener("click", openModal);
+});
+document.querySelectorAll(".modifier2").forEach((a) => {
+  a.addEventListener("click", openModal);
+});
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
@@ -200,27 +218,29 @@ backToGalleryBtn.addEventListener("click", function () {
   // Afficher le premier modal
   var modal = document.querySelector("#modal1");
   modal.style.display = "flex";
-
-  // Afficher la galerie
-  // var gallery = modal.querySelector(".modal-gallery");
-  // gallery.style.display = "flex";
 });
 
 // pour suprimer les projets
-
 function deleteProject(projectId) {
-  //const authorizationKey = 'token';
-
+  const authorizationKey = localStorage.getItem("token");
+  console.log(authorizationKey);
+  // const target = document.querySelector(e.target.getAttribute("href"));
+  // target.style.display = flex;
   fetch(`http://localhost:5678/api/works/${projectId}`, {
+    //console.log(projectId)
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authorizationKey}`,
     },
-    body: JSON.stringify({}),
   })
     .then((response) => {
       if (response.ok) {
+        //Mettre à jour le HTML ici
+        const projectList = document.querySelector(".gallery");
+        const deletedProject = document.querySelector(`[data-id='${projectId}']`);
+        projectList.removeChild(deletedProject);
+
         console.log("Le projet a été supprimé avec succès!");
       } else {
         console.error("La suppression du projet a échoué.");
@@ -228,50 +248,38 @@ function deleteProject(projectId) {
     })
     .catch((error) => {
       console.error(
-        "Une erreur est survenue lors de la suppression du projet:",
+        "Une erreur s'est produite lors de la suppression du projet :",
         error
       );
     });
 }
-const deleteIcons = document.querySelectorAll(".fa-trash-can ");
-console.log("bonjour");
 
-deleteIcons.forEach((icon) => {
-  icon.addEventListener("click", (event) => {
-    const projectId = icon.parentElement.dataset.projectId;
+// function deleteProject(projectId) {
+//   const authorizationKey = localStorage.getItem("token");
+//   console.log(authorizationKey);
 
-    deleteProject(projectId);
-  });
-});
-
-// Récupérer tous les ID des éléments à partir de l'API
-// fetch('http://localhost:5678/api/works')
-//   .then(response => response.json())
-//   .then(data => {
-//     // Parcourir tous les ID des éléments et envoyer une requête DELETE pour supprimer chaque élément
-//     data.forEach(element => {
-
-//le mettre dans une fonction
-//déclarer id
-//mettre une autorisation
-//     fetch('http://localhost:5678/api/works/' + id, {
-//       method: 'DELETE'
+//   fetch(`http://localhost:5678/api/works/${projectId}`, {
+//     method: "DELETE",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${authorizationKey}`,
+//     },
+//   })
+//     .then((response) => {
+//       if (response.ok) {
+//         //mettre à jour le html ici
+//         console.log("Le projet a été supprimé avec succès!");
+//       } else {
+//         console.error("La suppression du projet a échoué.");
+//       }
 //     })
-//       .then(response => {
-//         if (response.ok) {
-//           // L'élément a été supprimé avec succès
-//         } else {
-//           throw new Error('Impossible de supprimer l\'élément');
-//         }
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-// //   });
-// })
-// .catch(error => {
-//   console.error(error);
-// });
+//     .catch((error) => {
+//       console.error(
+//         "Une erreur est survenue lors de la suppression du projet:",
+//         error
+//       );
+//     });
+// }
 
 //login en logout
 if (localStorage.getItem("token")) {
@@ -291,25 +299,148 @@ photoUploadInput.addEventListener("change", (event) => {
   photoPreviewContainer.innerHTML = "";
   photoPreviewContainer.appendChild(photoPreview);
 });
+
+const form = document.getElementById("addform");
+const button = document.getElementById("bnt-valider");
+const inputPhoto = document.getElementById("photo-upload");
+
+// Evénement pour récupérer le fichier sélectionné par l'utilisateur
+inputPhoto.addEventListener("change", () => {
+  const file = inputPhoto.files[0];
+  console.log(file);
+});
+
 //changer la couleur du btn valider en vert
-// const form = document.getElementById("addform");
-// const submitButton = document.getElementById("bnt-valider");
 
-// form.addEventListener("input", (event) => {
-//   event.preventDefault(); // évite l'envoi du formulaire
-//   const photoUploadInputValue = document.getElementById("photo-upload");
-//   const categoryValue = document.getElementById("category").value;
-//   const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
+const submitButton = document.getElementById("bnt-valider");
 
-//   if (
-//     photoUploadInputValue &&
-//     titrePhotoAddValue &&
-//     categoryValue !== "option0"
-//   ) {
-//     submitButton.disabled = false;
+form.addEventListener("input", (event) => {
+  console.log(inputPhoto.files);
+  event.preventDefault(); // évite l'envoi du formulaire
+  //const photoUploadInputValue = document.getElementById("photo-upload").value;
+  const categoryValue = document.getElementById("category").value;
+  const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
 
-    // Envoie du formulaire au backend
+  if (
+    inputPhoto.files.length > 0 &&
+    titrePhotoAddValue &&
+    categoryValue !== "option0"
+  ) {
+    submitButton.disabled = false;
+  }
+});
+// Evénement pour envoyer le formulaire
 
-//     // ...
+button.addEventListener("click", (event) => {
+  const authorizationKey = localStorage.getItem("token");
+  event.preventDefault();
+  const formData = new FormData(form);
+  formData.append(
+    "image",
+    inputPhoto.files[0],
+    inputPhoto.files[0].name + ";type=image/png"
+  );
+
+  const headers = new Headers();
+
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ": " + pair[1]);
+  }
+  //headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MDY0ODU2MiwiZXhwIjoxNjgwNzM0OTYyfQ.gC7Ae2uAfAR5qIPrNHxDGSXGQyEYGPMJOCLMZikCdME");
+  headers.set("Authorization", `Bearer ${authorizationKey}`);
+  headers.set("accept", "application/json");
+
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    body: formData,
+    headers: headers,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // //   Récupérer le conteneur HTML pour afficher les projets
+      // const projectContainer = document.querySelector("gallery");
+
+      // // Créer un nouvel élément div pour le nouveau projet
+      // const newProjectDiv = document.createElement("div");
+      // newProjectDiv.classList.add("project");
+
+      // // Créer un élément image pour la miniature du projet
+      // const newProjectImage = document.createElement("img");
+      // newProjectImage.src = data.imageUrl;
+      // newProjectImage.alt = data.title;
+      // newProjectDiv.appendChild(newProjectImage);
+
+      // // Créer un élément h3 pour le titre du projet
+      // const newProjectTitle = document.createElement("h3");
+      // newProjectTitle.textContent = data.title;
+      // newProjectDiv.appendChild(newProjectTitle);
+
+      // // Créer un élément p pour la description du projet
+      // const newProjectDescription = document.createElement("p");
+      // newProjectDescription.textContent = data.description;
+      // newProjectDiv.appendChild(newProjectDescription);
+
+      // // Ajouter le nouveau projet au conteneur
+      // projectContainer.appendChild(newProjectDiv);
+      console.log("DATA CALL", JSON.stringify(data));
+    })
+    .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
+});
+
 //   }
+// });
+
+// button.addEventListener("click", (event) => {
+//   const authorizationKey = localStorage.getItem("token");
+//   event.preventDefault();
+//   const formData = new FormData(form);
+//   formData.append(
+//     "image",
+//     inputPhoto.files[0],
+//     inputPhoto.files[0].name + ";type=image/png"
+//   );
+
+//   const headers = new Headers();
+
+// ...
+
+//   fetch("http://localhost:5678/api/works", {
+//     method: "POST",
+//     body: formData,
+//     headers: headers,
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+
+//       // Récupérer le conteneur HTML pour afficher les projets
+//       const projectContainer = document.querySelector("gallery");
+
+//       // Créer un nouvel élément div pour le nouveau projet
+//       const newProjectDiv = document.createElement("div");
+//       newProjectDiv.classList.add("project");
+
+//       // Créer un élément image pour la miniature du projet
+//       const newProjectImage = document.createElement("img");
+//       newProjectImage.src = data.imageUrl;
+//       newProjectImage.alt = data.title;
+//       newProjectDiv.appendChild(newProjectImage);
+
+//       // Créer un élément h3 pour le titre du projet
+//       const newProjectTitle = document.createElement("h3");
+//       newProjectTitle.textContent = data.title;
+//       newProjectDiv.appendChild(newProjectTitle);
+
+//       // Créer un élément p pour la description du projet
+//       const newProjectDescription = document.createElement("p");
+//       newProjectDescription.textContent = data.description;
+//       newProjectDiv.appendChild(newProjectDescription);
+
+//       // Ajouter le nouveau projet au conteneur
+//       projectContainer.appendChild(newProjectDiv);
+
+//       console.log("DATA CALL", JSON.stringify(data));
+//     })
+//     .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
 // });
