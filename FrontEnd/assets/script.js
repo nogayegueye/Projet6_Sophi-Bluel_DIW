@@ -16,16 +16,11 @@ fetch("http://localhost:5678/api/works")
       `;
     });
 
-    console.log("bonsoir");
     modalGallery.innerHTML = html;
     const deleteIcons = document.querySelectorAll(".fa-trash-can");
-    console.log("bonjour");
-
     deleteIcons.forEach((icon) => {
       icon.addEventListener("click", (event) => {
         const projectId = icon.parentElement.dataset.id;
-        console.log(icon.parentElement);
-        console.log(projectId);
         deleteProject(projectId);
       });
     });
@@ -47,20 +42,17 @@ async function displayProjects() {
           </figure>
         `;
   });
-  console.log("bonsoir");
   gallery.innerHTML = html;
   return responseJson;
 }
 
 // Les filtres
 displayProjects().then((projects) => {
-  console.log(projects);
   const liItem = document.querySelectorAll("div.filtre ul li");
 
   liItem.forEach((li) => {
     li.addEventListener("click", () => {
       const category = li.getAttribute("data-category");
-      console.log(category);
       filterProjects(category, projects);
       liItem.forEach((li) => li.classList.remove("active"));
       li.classList.add("active");
@@ -159,15 +151,19 @@ let modal = null;
 const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
-  target.style.display = null;
-  target.removeAttribute("aria-hidden");
-  target.setAttribute("aria-modal", "true");
-  modal = target;
-  modal.addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    .addEventListener("click", stopPropagation);
+  if (target) {
+    target.style.display = null;
+    target.removeAttribute("aria-hidden");
+    target.setAttribute("aria-modal", "true");
+    modal = target;
+    modal.addEventListener("click", closeModal);
+    modal
+      .querySelector(".js-modal-close")
+      .addEventListener("click", closeModal);
+    modal
+      .querySelector(".js-modal-stop")
+      .addEventListener("click", stopPropagation);
+  }
 };
 
 const closeModal = function (e) {
@@ -175,7 +171,7 @@ const closeModal = function (e) {
   e.preventDefault();
   modal.style.display = "none";
   modal.setAttribute("aria-hidden", "true");
-  modal.removetAttribute("aria-modal");
+  modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
   modal
     .querySelector(".js-modal-close")
@@ -207,6 +203,12 @@ addPhotoBtn.addEventListener("click", function () {
   // Afficher la page d'ajout de photo
   var addPhotoModal = document.querySelector("#addPhotoModal");
   addPhotoModal.style.display = "flex";
+  addPhotoModal
+    .querySelector(".js-modal-close")
+    .addEventListener("click", () => {
+      var addPhotoModal = document.querySelector("#addPhotoModal");
+      addPhotoModal.style.display = "none";
+    });
 });
 
 var backToGalleryBtn = document.getElementById("back-to-gallery");
@@ -223,11 +225,7 @@ backToGalleryBtn.addEventListener("click", function () {
 // pour suprimer les projets
 function deleteProject(projectId) {
   const authorizationKey = localStorage.getItem("token");
-  console.log(authorizationKey);
-  // const target = document.querySelector(e.target.getAttribute("href"));
-  // target.style.display = flex;
   fetch(`http://localhost:5678/api/works/${projectId}`, {
-    //console.log(projectId)
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -244,13 +242,6 @@ function deleteProject(projectId) {
         const deletedProjects = document
           .querySelector(`[data-id='1+${projectId}']`)
           .remove();
-        const deleteProjects = document
-          .querySelector(`[data-id='1+${projectId}']`)
-          .remove();
-
-        //projectList.removeChild(deletedProject);
-        //$("figure[data-id=" +'${projectId}' + "]").remove();
-
         console.log("Le projet a été supprimé avec succès!");
       } else {
         console.error("La suppression du projet a échoué.");
@@ -264,37 +255,11 @@ function deleteProject(projectId) {
     });
 }
 
-// function deleteProject(projectId) {
-//   const authorizationKey = localStorage.getItem("token");
-//   console.log(authorizationKey);
-
-//   fetch(`http://localhost:5678/api/works/${projectId}`, {
-//     method: "DELETE",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${authorizationKey}`,
-//     },
-//   })
-//     .then((response) => {
-//       if (response.ok) {
-//         //mettre à jour le html ici
-//         console.log("Le projet a été supprimé avec succès!");
-//       } else {
-//         console.error("La suppression du projet a échoué.");
-//       }
-//     })
-//     .catch((error) => {
-//       console.error(
-//         "Une erreur est survenue lors de la suppression du projet:",
-//         error
-//       );
-//     });
-// }
-
 //login en logout
 if (localStorage.getItem("token")) {
   document.getElementById("myLink").innerHTML = "Logout";
 }
+
 //ajouter un projet
 
 const photoUploadInput = document.getElementById("photo-upload");
@@ -304,8 +269,8 @@ photoUploadInput.addEventListener("change", (event) => {
   const photoFile = event.target.files[0];
   const photoPreview = document.createElement("img");
   photoPreview.src = URL.createObjectURL(photoFile);
-  photoPreview.style.width = "100px";
-  photoPreview.style.height = "100px";
+  photoPreview.style.width = "129px";
+  photoPreview.style.height = "193px";
   photoPreviewContainer.innerHTML = "";
   photoPreviewContainer.appendChild(photoPreview);
 });
@@ -317,7 +282,6 @@ const inputPhoto = document.getElementById("photo-upload");
 // Evénement pour récupérer le fichier sélectionné par l'utilisateur
 inputPhoto.addEventListener("change", () => {
   const file = inputPhoto.files[0];
-  console.log(file);
 });
 
 //changer la couleur du btn valider en vert
@@ -325,9 +289,7 @@ inputPhoto.addEventListener("change", () => {
 const submitButton = document.getElementById("bnt-valider");
 
 form.addEventListener("input", (event) => {
-  console.log(inputPhoto.files);
-  event.preventDefault(); // évite l'envoi du formulaire
-  //const photoUploadInputValue = document.getElementById("photo-upload").value;
+  event.preventDefault();
   const categoryValue = document.getElementById("category").value;
   const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
 
@@ -354,9 +316,7 @@ button.addEventListener("click", (event) => {
   const headers = new Headers();
 
   for (let pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
   }
-  //headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MDY0ODU2MiwiZXhwIjoxNjgwNzM0OTYyfQ.gC7Ae2uAfAR5qIPrNHxDGSXGQyEYGPMJOCLMZikCdME");
   headers.set("Authorization", `Bearer ${authorizationKey}`);
   headers.set("accept", "application/json");
 
@@ -367,73 +327,46 @@ button.addEventListener("click", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-
       const gallery = document.querySelector(".gallery");
-      const html = `
-        <figure>
-        <img src="${inputPhoto.files[0]}" alt="${inputPhoto.files[0].name}">
-        <figcaption>${item.title}</figcaption>
-      </figure>`;
-      gallery.innerHTML = gallery.innerHTML+html;
+      const modalgallery = document.querySelector(".modal-gallery");
+
+      const figure = document.createElement("figure");
+      figure.setAttribute("data-id", `1+${data.id}`);
+
+      const image = document.createElement("img");
+      image.setAttribute("src", `${data.imageUrl}`);
+      image.setAttribute("alt", `${data.title}`);
+
+      const figcaption = document.createElement("figcaption");
+      figcaption.textContent = data.title;
+
+      figure.appendChild(image);
+      figure.appendChild(figcaption);
+
+      gallery.appendChild(figure);
+
+      const figure1 = document.createElement("figure");
+      figure1.setAttribute("data-id", `${data.id}`);
+
+      const image1 = document.createElement("img");
+      image1.setAttribute("src", `${data.imageUrl}`);
+      image1.setAttribute("alt", `${data.title}`);
+
+      const figcaption1 = document.createElement("figcaption");
+      figcaption1.textContent = data.title;
+
+      figure1.appendChild(image1);
+      figure1.appendChild(figcaption1);
+
+      modalgallery.appendChild(figure1);
+
+      var addPhotoModal = document.querySelector("#addPhotoModal");
+      addPhotoModal.style.display = "none";
+
+      // Afficher le premier modal
+      var modal = document.querySelector("#modal1");
+      modal.style.display = "flex";
       console.log("DATA CALL", JSON.stringify(data));
     })
     .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
 });
-
-//   }
-// });
-
-// button.addEventListener("click", (event) => {
-//   const authorizationKey = localStorage.getItem("token");
-//   event.preventDefault();
-//   const formData = new FormData(form);
-//   formData.append(
-//     "image",
-//     inputPhoto.files[0],
-//     inputPhoto.files[0].name + ";type=image/png"
-//   );
-
-//   const headers = new Headers();
-
-// ...
-
-//   fetch("http://localhost:5678/api/works", {
-//     method: "POST",
-//     body: formData,
-//     headers: headers,
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data);
-
-//       // Récupérer le conteneur HTML pour afficher les projets
-//       const projectContainer = document.querySelector("gallery");
-
-//       // Créer un nouvel élément div pour le nouveau projet
-//       const newProjectDiv = document.createElement("div");
-//       newProjectDiv.classList.add("project");
-
-//       // Créer un élément image pour la miniature du projet
-//       const newProjectImage = document.createElement("img");
-//       newProjectImage.src = data.imageUrl;
-//       newProjectImage.alt = data.title;
-//       newProjectDiv.appendChild(newProjectImage);
-
-//       // Créer un élément h3 pour le titre du projet
-//       const newProjectTitle = document.createElement("h3");
-//       newProjectTitle.textContent = data.title;
-//       newProjectDiv.appendChild(newProjectTitle);
-
-//       // Créer un élément p pour la description du projet
-//       const newProjectDescription = document.createElement("p");
-//       newProjectDescription.textContent = data.description;
-//       newProjectDiv.appendChild(newProjectDescription);
-
-//       // Ajouter le nouveau projet au conteneur
-//       projectContainer.appendChild(newProjectDiv);
-
-//       console.log("DATA CALL", JSON.stringify(data));
-//     })
-//     .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
-// });

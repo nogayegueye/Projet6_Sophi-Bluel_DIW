@@ -390,6 +390,7 @@ h3 {
   background-color: white;
   float: right;
   clear: both;
+  cursor: pointer;
 }
 .bande1 {
   border: 1px solid #b3b3b3;
@@ -407,6 +408,7 @@ h3 {
 #back-to-gallery {
   border: none;
   background-color: white;
+  cursor: pointer;
 }
 
 .add-image {
@@ -456,7 +458,7 @@ select {
   height: 36px;
   width: 237px;
   border-radius: 60px;
-  background-color: #008766;
+  background-color: #1D6154;
   border: none;
   margin: 50px 100px;
   cursor: pointer;
@@ -482,7 +484,6 @@ input[type="file"] {
   color: #306685;
 }
 button[disabled]{
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
+  background-color: #A7A7A7;
+  color: white;
 }
