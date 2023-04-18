@@ -327,6 +327,8 @@ button.addEventListener("click", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
+      //mettre à jour le html
+      //Dans la page d'accueil
       const gallery = document.querySelector(".gallery");
       const modalgallery = document.querySelector(".modal-gallery");
 
@@ -345,18 +347,25 @@ button.addEventListener("click", (event) => {
 
       gallery.appendChild(figure);
 
+      //Dans le modal
       const figure1 = document.createElement("figure");
       figure1.setAttribute("data-id", `${data.id}`);
+      figure1.classList.add(`image-container`);
 
       const image1 = document.createElement("img");
       image1.setAttribute("src", `${data.imageUrl}`);
       image1.setAttribute("alt", `${data.title}`);
 
+      const icon = document.createElement("i");
+      icon.classList.add(`fa-solid`, `fa-trash-can`);
+
       const figcaption1 = document.createElement("figcaption");
       figcaption1.textContent = data.title;
 
       figure1.appendChild(image1);
+      figure1.appendChild(icon);
       figure1.appendChild(figcaption1);
+
 
       modalgallery.appendChild(figure1);
 

@@ -1,3 +1,5 @@
+
+
 document.getElementById("form").addEventListener("submit", function (e) {
   e.preventDefault();
   var email = document.forms["form"]["email"].value;
