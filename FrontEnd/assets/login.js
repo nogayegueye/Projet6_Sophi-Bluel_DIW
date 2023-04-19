@@ -21,15 +21,11 @@ document.getElementById("form").addEventListener("submit", function (e) {
       if (result.status === 200) {
         result.json().then((data) => {
           const token = data.token;
-          console.log(data);
           localStorage.setItem("token", token);
           window.location.replace("index.html");
         });
-        //   window.location.replace("connexion.html");
       } else {
         alert("The email or password you entered is wrong!");
       }
-
-      console.log(result);
     });
 });

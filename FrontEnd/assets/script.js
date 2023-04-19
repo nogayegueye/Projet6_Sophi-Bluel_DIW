@@ -29,7 +29,6 @@ fetch("http://localhost:5678/api/works")
     console.error(error);
   });
 
-//recupération des projets
 async function displayProjects() {
   const response = await fetch("http://localhost:5678/api/works");
   const responseJson = await response.json();
@@ -46,7 +45,6 @@ async function displayProjects() {
   return responseJson;
 }
 
-// Les filtres
 displayProjects().then((projects) => {
   const liItem = document.querySelectorAll("div.filtre ul li");
 
@@ -85,16 +83,13 @@ function filterProjects(category, projects) {
     .join("");
 }
 
-//Supprimer les filtres lors de la connexion
 const token = localStorage.getItem("token");
 
-// Récupérer les boutons par leur ID
 const button1 = document.getElementById("button1");
 const button2 = document.getElementById("button2");
 const button3 = document.getElementById("button3");
 const button4 = document.getElementById("button4");
 
-// Masquer les boutons si un token est stocké
 if (token) {
   button1.style.display = "none";
   button2.style.display = "none";
@@ -102,11 +97,10 @@ if (token) {
   button4.style.display = "none";
 }
 
-//Ajouter les boutons modifier lorque l'utilisateur est connecté.
 function addButtons() {
-  // créer les buttons de façon dynamique lorsque le token est valide
+  
   if (localStorage.getItem("token")) {
-    // Créer les liens "modifier" avec une icône en avant
+    
     var modifierLink1 = document.createElement("a");
     modifierLink1.href = "#modal1";
     modifierLink1.innerHTML = '<span class="fas fa-edit"></span> Modifier';
@@ -119,17 +113,15 @@ function addButtons() {
     modifierLink3.href = "#modal1";
     modifierLink3.innerHTML = '<span class="fas fa-edit"></span> Modifier';
 
-    // Cibler les éléments où les liens doivent apparaître
     var linkContainer1 = document.querySelector(".modifier1");
     var linkContainer2 = document.querySelector(".modifier2");
     var linkContainer3 = document.querySelector(".js-modal");
-
-    // Ajouter les liens aux éléments ciblés
+   
     linkContainer1.appendChild(modifierLink1);
     linkContainer2.appendChild(modifierLink2);
     linkContainer3.appendChild(modifierLink3);
   } else {
-    // Masquer les liens "modifier"
+
     var modifierLinks = document.getElementsByTagName("a");
     for (var i = 0; i < modifierLinks.length; i++) {
       var link = modifierLinks[i];
@@ -143,9 +135,6 @@ function addButtons() {
 }
 addButtons();
 
-//les modales
-
-//modal1
 let modal = null;
 
 const openModal = function (e) {
@@ -193,14 +182,13 @@ document.querySelectorAll(".modifier2").forEach((a) => {
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
-//modal2
+
 var addPhotoBtn = document.getElementById("add-photo");
 addPhotoBtn.addEventListener("click", function () {
-  //Masquer la galerie
+  
   var modalgallery = document.querySelector("#modal1");
   modalgallery.style.display = "none";
 
-  // Afficher la page d'ajout de photo
   var addPhotoModal = document.querySelector("#addPhotoModal");
   addPhotoModal.style.display = "flex";
   addPhotoModal
@@ -213,16 +201,14 @@ addPhotoBtn.addEventListener("click", function () {
 
 var backToGalleryBtn = document.getElementById("back-to-gallery");
 backToGalleryBtn.addEventListener("click", function () {
-  // Masquer la page d'ajout de photo
+  
   var addPhotoModal = document.querySelector("#addPhotoModal");
   addPhotoModal.style.display = "none";
 
-  // Afficher le premier modal
   var modal = document.querySelector("#modal1");
   modal.style.display = "flex";
 });
 
-// pour suprimer les projets
 function deleteProject(projectId) {
   const authorizationKey = localStorage.getItem("token");
   fetch(`http://localhost:5678/api/works/${projectId}`, {
@@ -234,7 +220,7 @@ function deleteProject(projectId) {
   })
     .then((response) => {
       if (response.ok) {
-        //Mettre à jour le HTML ici
+        
         const projectList = document.querySelector(".gallery");
         const deletedProject = document
           .querySelector(`[data-id='${projectId}']`)
@@ -242,9 +228,8 @@ function deleteProject(projectId) {
         const deletedProjects = document
           .querySelector(`[data-id='1+${projectId}']`)
           .remove();
-        console.log("Le projet a été supprimé avec succès!");
       } else {
-        console.error("La suppression du projet a échoué.");
+        
       }
     })
     .catch((error) => {
@@ -255,12 +240,9 @@ function deleteProject(projectId) {
     });
 }
 
-//login en logout
 if (localStorage.getItem("token")) {
   document.getElementById("myLink").innerHTML = "Logout";
 }
-
-//ajouter un projet
 
 const photoUploadInput = document.getElementById("photo-upload");
 const photoPreviewContainer = document.querySelector(".add-image");
@@ -279,17 +261,20 @@ const form = document.getElementById("addform");
 const button = document.getElementById("bnt-valider");
 const inputPhoto = document.getElementById("photo-upload");
 
-// Evénement pour récupérer le fichier sélectionné par l'utilisateur
 inputPhoto.addEventListener("change", () => {
   const file = inputPhoto.files[0];
 });
 
-//changer la couleur du btn valider en vert
 
 const submitButton = document.getElementById("bnt-valider");
+const form2 = document.getElementById("addform");
+const errorContainer = document.getElementById("message-erreur");
+const inputPhoto2 = document.getElementById("photo-upload");
+
 
 form.addEventListener("input", (event) => {
   event.preventDefault();
+  const inputPhoto2 = document.getElementById("photo-upload");
   const categoryValue = document.getElementById("category").value;
   const titrePhotoAddValue = document.getElementById("titre-photo-add").value;
 
@@ -299,9 +284,14 @@ form.addEventListener("input", (event) => {
     categoryValue !== "option0"
   ) {
     submitButton.disabled = false;
+    errorContainer.innerHTML = "";
+
+  }
+  else {
+    submitButton.disabled = true;
+    errorContainer.innerHTML = "Veuillez remplir tous les champs pour pouvoir valider le formulaire.";
   }
 });
-// Evénement pour envoyer le formulaire
 
 button.addEventListener("click", (event) => {
   const authorizationKey = localStorage.getItem("token");
@@ -327,8 +317,7 @@ button.addEventListener("click", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      //mettre à jour le html
-      //Dans la page d'accueil
+
       const gallery = document.querySelector(".gallery");
       const modalgallery = document.querySelector(".modal-gallery");
 
@@ -347,7 +336,6 @@ button.addEventListener("click", (event) => {
 
       gallery.appendChild(figure);
 
-      //Dans le modal
       const figure1 = document.createElement("figure");
       figure1.setAttribute("data-id", `${data.id}`);
       figure1.classList.add(`image-container`);
@@ -371,8 +359,6 @@ button.addEventListener("click", (event) => {
 
       var addPhotoModal = document.querySelector("#addPhotoModal");
       addPhotoModal.style.display = "none";
-
-      // Afficher le premier modal
       var modal = document.querySelector("#modal1");
       modal.style.display = "flex";
       console.log("DATA CALL", JSON.stringify(data));
