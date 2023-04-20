@@ -361,7 +361,6 @@ button.addEventListener("click", (event) => {
       addPhotoModal.style.display = "none";
       var modal = document.querySelector("#modal1");
       modal.style.display = "flex";
-      console.log("DATA CALL", JSON.stringify(data));
     })
     .catch((error) => console.error("ERROR CALL", JSON.stringify(error)));
 });

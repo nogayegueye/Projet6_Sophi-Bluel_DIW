@@ -4,7 +4,6 @@ document.getElementById("form").addEventListener("submit", function (e) {
   e.preventDefault();
   var email = document.forms["form"]["email"].value;
   var alamat = document.forms["form"]["password"].value;
-  console.log(email);
 
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
